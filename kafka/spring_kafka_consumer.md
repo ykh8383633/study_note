@@ -83,29 +83,29 @@ ListenerConsumer(KafkaMessageListnerContainer 내부 private class)
     // invokeIfHaveRecords를 타고 가면 나옴 (메세지 처리 부, batch 아님)
     // polling한 메세지를 순회하며 listner 실행
     private void doInvokeWithRecords(final ConsumerRecords<K, V> records) {
-			Iterator<ConsumerRecord<K, V>> iterator = records.iterator();
-			while (iterator.hasNext()) {
-				if (this.stopImmediate && !isRunning()) {
-					break;
-				}
-				final ConsumerRecord<K, V> cRecord = checkEarlyIntercept(iterator.next());
-				if (cRecord == null) {
-					continue;
-				}
-				this.logger.trace(() -> "Processing " + KafkaUtils.format(cRecord));
-				doInvokeRecordListener(cRecord, iterator); // listner 실행
-				if (this.commonRecordInterceptor !=  null) {
-					this.commonRecordInterceptor.afterRecord(cRecord, this.consumer);
-				}
-				if (this.nackSleepDurationMillis >= 0) {
-					handleNack(records, cRecord);
-					break;
-				}
-				if (checkImmediatePause(iterator)) {
-					break;
-				}
-			}
-		}
+        Iterator<ConsumerRecord<K, V>> iterator = records.iterator();
+        while (iterator.hasNext()) {
+            if (this.stopImmediate && !isRunning()) {
+                break;
+            }
+            final ConsumerRecord<K, V> cRecord = checkEarlyIntercept(iterator.next());
+            if (cRecord == null) {
+                continue;
+            }
+            this.logger.trace(() -> "Processing " + KafkaUtils.format(cRecord));
+            doInvokeRecordListener(cRecord, iterator); // listner 실행
+            if (this.commonRecordInterceptor !=  null) {
+                this.commonRecordInterceptor.afterRecord(cRecord, this.consumer);
+            }
+            if (this.nackSleepDurationMillis >= 0) {
+                handleNack(records, cRecord);
+                break;
+            }
+            if (checkImmediatePause(iterator)) {
+                break;
+            }
+        }
+    }
  ````
 
  ### 언제 consumer를 멈출까?
