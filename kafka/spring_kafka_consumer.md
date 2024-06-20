@@ -52,13 +52,13 @@ ListenerConsumer(KafkaMessageListnerContainer 내부 private class)
         // ...
 
         while (isRunning()) {
-				try {
-					pollAndInvoke(); // message를 poll하고 listner를 실행 시킴
-					if (failedAuthRetry) {
-						publishRetryAuthSuccessfulEvent();
-						failedAuthRetry = false;
-					}
-				}
+            try {
+                pollAndInvoke(); // message를 poll하고 listner를 실행 시킴
+                if (failedAuthRetry) {
+                    publishRetryAuthSuccessfulEvent();
+                    failedAuthRetry = false;
+                }
+            }
 		
         // ...
     }
